@@ -5,8 +5,8 @@ import cors from "cors"
 import helmet from "helmet"
 import morgan from "morgan"
 /*  ROUTE IMPORTS */
-
-
+import projectRoute from "./Routes/projectsRoute"
+import taskRoute from "./Routes/taskRoutes"
 
 /*  CONFIGURATION  */
 
@@ -24,6 +24,8 @@ app.get("/",(req,res)=>{
     res.send("this is home route");
 })
 
+app.use("/projects",projectRoute);
+app.use("/tasks",taskRoute);
 const port=process.env.PORT ||3000;
 
 app.listen(port,()=>{
