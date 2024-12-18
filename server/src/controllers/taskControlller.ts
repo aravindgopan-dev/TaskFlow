@@ -27,22 +27,71 @@ export const getTasks =async(
 }
 
 
-export const createProject =async(
+
+
+
+export const createTask =async(
     req:Request,
     res:Response):Promise<void>=>{
-        const {name,description,startDate,endDate} =req.body;
+        const {
+            title,
+            description,
+            status,
+            priority,
+            tags,
+            startDate,
+            endDate,
+            dueDate,
+            points,
+            projectId,
+            authorUserId,
+            assignedUserId
+        } =req.body;
         try{
-            const newproject= await prisma.project.create({
+            const newtask= await prisma.task.create({
                 data:{
-                    name,
+                    title,
                     description,
+                    status,
+                    priority,
+                    tags,
                     startDate,
-                    endDate
+                    dueDate,
+                    points,
+                    projectId,
+                    authorUserId,
+                    assignedUserId
                 }
             })
-            res.status(200).json(newproject)
+            res.status(200).json(newtask)
         }
         catch(error:any){
-        res.status(500).json({message:`Error creating projects ${error.message} `})
+        res.status(500).json({message:`Error creating task ${error.message} `})
         }
+}
+
+
+
+
+export const updateTaskStatus =async(
+    req:Request,
+    res:Response):Promise<void>=>{
+    try{
+        console.log(req.query);
+        const {taskId}=req.params
+        const {status}=req.body
+        const update= await prisma.task.update({
+            where:{
+                id:Number(taskId)
+
+            },
+           data:{
+            status:status
+           }
+        });
+        res.json(update);
+    }
+    catch(error:any){
+       res.status(500).json({message:`Error updating tasks: ${error.message}`});
+    } 
 }

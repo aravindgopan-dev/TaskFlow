@@ -35,3 +35,4 @@ export const createProject =async(
         res.status(500).json({message:`Error creating projects ${error.message} `})
         }
 }
+

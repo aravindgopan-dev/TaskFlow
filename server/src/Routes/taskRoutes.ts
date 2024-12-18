@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { getTasks } from "../controllers/taskControlller";
+import { createTask, getTasks, updateTaskStatus } from "../controllers/taskControlller";
 
 
 
 const router=Router()
 
 router.get("/",getTasks)
-
-
+router.post("/",createTask)
+router.patch("/:taskId/status",updateTaskStatus);
 
 export default router

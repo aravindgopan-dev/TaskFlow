@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProject = exports.getTasks = void 0;
+exports.updateTaskStatus = exports.createTask = exports.getTasks = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,21 +33,48 @@ const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTasks = getTasks;
-const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, startDate, endDate } = req.body;
+const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title, description, status, priority, tags, startDate, endDate, dueDate, points, projectId, authorUserId, assignedUserId } = req.body;
     try {
-        const newproject = yield prisma.project.create({
+        const newtask = yield prisma.task.create({
             data: {
-                name,
+                title,
                 description,
+                status,
+                priority,
+                tags,
                 startDate,
-                endDate
+                dueDate,
+                points,
+                projectId,
+                authorUserId,
+                assignedUserId
             }
         });
-        res.status(200).json(newproject);
+        res.status(200).json(newtask);
     }
     catch (error) {
-        res.status(500).json({ message: `Error creating projects ${error.message} ` });
+        res.status(500).json({ message: `Error creating task ${error.message} ` });
     }
 });
-exports.createProject = createProject;
+exports.createTask = createTask;
+const updateTaskStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(req.query);
+        const { taskId } = req.params;
+        const { status } = req.body;
+        const update = yield prisma.task.update({
+            where: {
+                id: Number(taskId)
+            },
+            data: {
+                status: status
+            }
+        });
+        res.json(update);
+    }
+    catch (error) {
+        res.status(500).json({ message: `Error updating tasks: ${error.message}` });
+    }
+});
+exports.updateTaskStatus = updateTaskStatus;
