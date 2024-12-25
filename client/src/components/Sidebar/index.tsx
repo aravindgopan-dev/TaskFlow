@@ -6,10 +6,13 @@ import { usePathname } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import Link from 'next/link';
 import { setIsSidebarCollapsed } from '@/state';
+import { useGetProjectQuery } from '@/state/api';
 
 function Index() {
   const [showProject, setShowProject] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
+  const {data:projects}=useGetProjectQuery();
+
   const  dispatch=useAppDispatch()
   const isSidebarCollapsed = useAppSelector((state) => state.global.isSidebarCollapsed)
 
@@ -17,6 +20,7 @@ function Index() {
     `fixed flex flex-col shadow-xl transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white ${isSidebarCollapsed?"w-0 hidden":"w-64"}`;
 
   return (
+    
     <div className={SidebarClassName}>
       {/* Sidebar Header */}
       <div className="flex flex-col justify-start ">
@@ -59,6 +63,16 @@ function Index() {
             :<ChevronDownIcon  className='h-5 w-5'></ChevronDownIcon>}
           
         </button>
+            {showProject &&
+            projects?.map((project) => (
+              <SidebarLink
+                key={project.id} 
+                icon={Briefcase}
+                label={project.name}
+                href={`/projects/${project.id}`}
+              />
+              ))}
+
 
 
 

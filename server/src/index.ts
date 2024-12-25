@@ -26,7 +26,7 @@ app.get("/",(req,res)=>{
 
 app.use("/projects",projectRoute);
 app.use("/tasks",taskRoute);
-const port=process.env.PORT ||3000;
+const port=process.env.PORT ||8000;
 
 app.listen(port,()=>{
     console.log(`SERVER RUNNING AT PORT :${port}`);
