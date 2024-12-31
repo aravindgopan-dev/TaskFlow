@@ -7,68 +7,72 @@ export interface Project {
     description?: string;
     startDate?: string;
     endDate?: string;
-}
-
-export enum Priority {
+  }
+  
+  export enum Priority {
     Urgent = "Urgent",
     High = "High",
     Medium = "Medium",
     Low = "Low",
-    Backlog = "backlog"
-}
-
-export enum Status {
-    ToDo = "To DO",
+    Backlog = "Backlog",
+  }
+  
+  export enum Status {
+    ToDo = "To Do",
     WorkInProgress = "Work In Progress",
     UnderReview = "Under Review",
-    Completed = "Completed"
-}
-
-export interface User {
-    UserId?: number;
-    userName?: string;
-    email?: string;
+    Completed = "Completed",
+  }
+  
+  export interface User {
+    userId?: number;
+    username: string;
+    email: string;
     profilePictureUrl?: string;
     cognitoId?: string;
-    teamId?: string;
-}
-
-export interface Attachments {
+    teamId?: number;
+  }
+  
+  export interface Attachment {
     id: number;
-    fileUrl: string;
+    fileURL: string;
     fileName: string;
-    taskId: string;
-    uploadedById: number;
-}
-
-export interface Comment {
-    id: number;
-    text: string;
     taskId: number;
-    userId: number;
-    task: Task;
-    user: User;
-}
-
-export interface Task {
-    id: number; // Change 'Number' to 'number'
+    uploadedById: number;
+  }
+  
+  export interface Task {
+    id: number;
     title: string;
     description?: string;
     status?: Status;
     priority?: Priority;
     tags?: string;
     startDate?: string;
-    endDate?: string;
     dueDate?: string;
     points?: number;
     projectId: number;
     authorUserId?: number;
     assignedUserId?: number;
+  
     author?: User;
     assignee?: User;
-    attachments?: Attachments[];
     comments?: Comment[];
-}
+    attachments?: Attachment[];
+  }
+  
+  export interface SearchResults {
+    tasks?: Task[];
+    projects?: Project[];
+    users?: User[];
+  }
+  
+  export interface Team {
+    teamId: number;
+    teamName: string;
+    productOwnerUserId?: number;
+    projectManagerUserId?: number;
+  }
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
