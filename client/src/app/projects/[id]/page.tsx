@@ -4,6 +4,8 @@ import React, { use, useState } from "react";
 import ProjectHeader from "@/app/projects/ProjectHeader";
 import BordView from "../BoradView";
 import ListView from "../ListView";
+import TableView from "../TableView";
+import ModalNewTask from "@/components/ModalNewTask";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -18,7 +20,12 @@ function Page({ params }: Props) {
   return (
     <div>
       {/* Header section */}
+      <ModalNewTask 
+      isOpen={isModalNewTaskOpen}
+      onClose={()=>setIsModalNewTaskOpen(false)}
+      id={id}
       
+      ></ModalNewTask>
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       {/* Add more components or logic as needed */}
       {activeTab==="Board" &&(
@@ -27,9 +34,10 @@ function Page({ params }: Props) {
       {activeTab==="List" &&(
         <ListView id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen}></ListView>
       )}
-      {activeTab==="TimeLine" &&(
-        <ListView id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen}></ListView>
+      {activeTab==="Table" &&(
+        <TableView id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen}></TableView>
       )}
+      
     </div>
   );
 }
